@@ -138,3 +138,96 @@ babel插件可以通过`.babelrc`文件配置（推荐）
   ]
 }
 ```
+
+## 优化项 optimization
+```js
+yarn add terser-webpack-plugin optimize-css-assets-webpack-plugin -D
+
+const TerserJSPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+optimization: {
+    
+  minimizer: [
+    new TerserJSPlugin(), // 压缩JS
+    new OptimizeCSSAssetsPlugin()  // 压缩css
+  ]
+}
+```
+
+## 打包多页应用
+通过多个 `HtmlWebpackPlugin` 进行处理。  
+
+```js
+entry: {
+  index: './src/index.js',
+  other: './src/other.js'
+},
+plugins: [
+  new HtmlWebpackPlugin({
+    template: './public/index.html',
+    filename: 'index.html',
+    chunks: ['index']  // 代码分块。默认会引进入口的所有js文件，通过 chunk 只引入自己想要的
+  }),
+    new HtmlWebpackPlugin({
+    template: './public/other.html',
+    filename: 'other.html',
+    chunks: ['other']
+  }),
+]
+```
+
+## watch
+实时监控打包。
+
+```js
+watch: true,
+watchOptions: {
+  poll: 1000,  // 每秒检查一次变动
+  aggregateTimeout: 500, // 防抖，500毫秒后无操作，则进行打包
+  ignored: ['node_modules']  // 不需要监控哪些文件
+}
+```
+
+## resolve
+```js
+resolve: {
+  modules: [path.resolve('node_modules')],  // 解析模块时搜索的目录
+  alias: {
+     @: path.resolve(__dirname, 'src/') // 为src配置别名为@
+  },
+  mainFields: ['main', 'sytle'], //  当从 npm 包中导入模块时，决定在 package.json 中使用哪个字段导入模块。优先查找左边。
+  mainfile: ['index'],  // 入口文件的名字，默认index
+  extensions: ['.vue', '.jsx', '.js', '.json'], // 配置扩展名，引入文件时可以不用写配置的扩展名
+}
+```
+
+## 环境配置 webpack-merge
+yarn add webpack-merge -D  
+
+**webpack.common.js**
+```js
+module.exports = {
+  // 公共配置...
+}
+```  
+
+**webpack.dev.js**  
+```js
+const merge = require('webpack-merge');
+const common = require(./webpack.common.js);
+
+module.exports = merge(common, {
+  // 开发环境配置...
+})
+```  
+
+**webpack.prod.js**  
+```js
+const merge = require('webpack-merge');
+const common = require(./webpack.common.js);
+
+module.exports = merge(common, {
+  // 生产环境配置...
+})
+```
