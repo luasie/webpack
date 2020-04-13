@@ -203,7 +203,7 @@ resolve: {
 ```
 
 ## 环境配置 webpack-merge
-yarn add webpack-merge -D  
+`yarn add webpack-merge -D ` 
 
 **webpack.common.js**
 ```js
