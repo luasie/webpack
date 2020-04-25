@@ -23,7 +23,7 @@ yarn add html-webpack-plugin  clean-webpack-plugin -D
 plugins: [
   new HtmlWebpackPlugin({
     template: './public/index.html'　// 指定模板
-    hash: true, // 防治缓存
+    hash: true, // 防止缓存
     minify: {
       removeAttributeQuotes: true  // 压缩　去除引号
     }
