@@ -120,8 +120,8 @@ rules: [
             '@babel/preset-env'
           ],
           plugins: [
-            ['@babel/plugin-proposal-class-properties'], // 转译class类
-            ['@babel/plugin-transform-runtime']　// 辅助代码从这里引用，可以减少代码体积
+            ['@babel/plugin-proposal-class-properties'], // 转译class类。@babel/preset-env 包含了ES6的最新语法转换，不需要再引入这个插件
+            ['@babel/plugin-transform-runtime']　// 使babel的辅助代码可以重用，避免多个文件生成多份同样的代码。启动 splitChunks 时会被打包到 verdors 文件，可以减少代码体积
           ]
         }
       }
